@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 60
+      MemorySize: 256
+      Handler: io.github.yuokada.lambda.GreetingLambda
+      CodeUri: /Users/yuokada/works/IdeaProjects/quarkus-line-bot-ping-pong
+      Runtime: java11
+      Architectures:
+        - x86_64
