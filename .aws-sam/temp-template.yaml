@@ -4,7 +4,7 @@ Resources:
     Properties:
       Timeout: 60
       MemorySize: 256
-      Handler: io.github.yuokada.lambda.GreetingLambda
+      Handler: io.github.yuokada.StreamLambda
       CodeUri: /Users/yuokada/works/IdeaProjects/quarkus-line-bot-ping-pong
       Runtime: java11
       Architectures:

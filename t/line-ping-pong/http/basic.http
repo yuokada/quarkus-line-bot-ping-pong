@@ -1,0 +1,8 @@
+#curl -X GET --location "http://curl-iv-XPOSTlocalhost:8080/callback/add --json '{"right": 100, "left": 10}'"
+POST localhost:8080/callback/add
+Host: localhost:8080
+#User-Agent: curl/7.88.1
+Content-Type: application/json
+Accept: application/json
+
+{"right": 100, "left": 10}

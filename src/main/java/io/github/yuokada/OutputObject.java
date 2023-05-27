@@ -10,13 +10,13 @@ public class OutputObject {
         return result;
     }
 
-    public String getRequestId() {
-        return requestId;
-    }
-
     public OutputObject setResult(String result) {
         this.result = result;
         return this;
+    }
+
+    public String getRequestId() {
+        return requestId;
     }
 
     public OutputObject setRequestId(String requestId) {
