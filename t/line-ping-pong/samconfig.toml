@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+profile = "serverless"
+region = "ap-northeast-1"
+
+[default.deploy.parameters]
+stack_name = "quarkus-line-ping-pong"
+resolve_s3 = true
+s3_prefix = "quarkus-line-ping-pong"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
