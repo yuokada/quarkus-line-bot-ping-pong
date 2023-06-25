@@ -1,6 +1,5 @@
 package io.github.yuokada.provider;
 
-import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.messaging.client.MessagingApiClient;
 import com.linecorp.bot.parser.LineSignatureValidator;
 import com.linecorp.bot.parser.WebhookParser;
@@ -20,18 +19,13 @@ public class ApiClientProvider {
     String callbackPath;
 
     @Produces
-    public LineMessagingClient provideApiClient() {
+    public MessagingApiClient provideNewApiClient() {
         if (channelAccessToken.isEmpty()) {
             throw new RuntimeException(
                 "channel token is empty. Please set line.bot.channel-token in application.properties or somewhere."
             );
         }
-        return LineMessagingClient.builder(channelAccessToken).build();
-    }
-
-    @Produces
-    public MessagingApiClient provideNewApiClient() {
-        return MessagingApiClient.builder(channelSecret).build();
+        return MessagingApiClient.builder(channelAccessToken).build();
     }
 
     @Produces

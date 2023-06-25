@@ -1,9 +1,10 @@
 package io.github.yuokada;
 
-import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.ReplyMessage;
-import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.client.base.Result;
+import com.linecorp.bot.messaging.client.MessagingApiClient;
+import com.linecorp.bot.messaging.model.Message;
+import com.linecorp.bot.messaging.model.ReplyMessageRequest;
+import com.linecorp.bot.messaging.model.TextMessage;
 import com.linecorp.bot.parser.WebhookParseException;
 import com.linecorp.bot.parser.WebhookParser;
 import com.linecorp.bot.webhook.model.CallbackRequest;
@@ -14,6 +15,7 @@ import io.github.yuokada.model.AddObject;
 import io.github.yuokada.model.ResultObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -34,11 +36,9 @@ public class CallbackResource {
 
     @Inject
     WebhookParser webhookParser;
-    @Inject
-    LineMessagingClient lineMessagingClient;
 
-//    @Inject
-//    MessagingApiClient messagingApiClient;
+    @Inject
+    MessagingApiClient messagingApiClient;
 
     @Inject
     Logger logger;
@@ -78,15 +78,17 @@ public class CallbackResource {
     private void handleTextMessageEvent(MessageEvent event)
         throws IOException {
         TextMessageContent userMessage = (TextMessageContent) event.message();
-        ReplyMessage message = new ReplyMessage(
+
+        ReplyMessageRequest message = new ReplyMessageRequest(
             event.replyToken(),
-            new TextMessage(userMessage.text() + " pong!")
+            List.of(new TextMessage(userMessage.text() + " pong!")),
+            false
         );
-        CompletableFuture<BotApiResponse> futureResponse =
-            lineMessagingClient.replyMessage(message);
+        CompletableFuture<Result<Void>> futureResponse = messagingApiClient.replyMessage(
+            message);
         try {
-            BotApiResponse response = futureResponse.get();
-            logger.info(response);
+            Result<Void> result = futureResponse.get();
+            logger.info(result);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
