@@ -3,7 +3,7 @@ package io.github.yuokada;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsString;

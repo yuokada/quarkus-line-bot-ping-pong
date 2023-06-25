@@ -4,8 +4,8 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.messaging.client.MessagingApiClient;
 import com.linecorp.bot.parser.LineSignatureValidator;
 import com.linecorp.bot.parser.WebhookParser;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
