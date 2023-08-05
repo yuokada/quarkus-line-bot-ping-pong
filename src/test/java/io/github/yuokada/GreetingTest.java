@@ -16,6 +16,7 @@ public class GreetingTest {
     public void testJaxrs() {
         RestAssured.when().get("/hello").then()
             .contentType("text/plain")
+            .header("X-Super-Header", "intercepting the request")
             .body(equalTo("hello jaxrs"));
     }
 
