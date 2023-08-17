@@ -20,3 +20,6 @@ updates:
       line-dependencies:
         patterns:
           - "com.linecorp.bot:*"    
+      quarkus-dependencies:
+        patterns:
+          - "io.quarkus:*"    
