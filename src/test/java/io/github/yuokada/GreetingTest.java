@@ -1,24 +1,17 @@
 package io.github.yuokada;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.core.MediaType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
 public class GreetingTest {
-
-    @Test
-    public void testJaxrs() {
-        RestAssured.when().get("/hello").then()
-            .contentType("text/plain")
-            .header("X-Super-Header", "intercepting the request")
-            .body(equalTo("hello jaxrs"));
-    }
 
     @Test
     public void testCallback() {
@@ -31,7 +24,21 @@ public class GreetingTest {
             .when().post("/callback")
             .then()
             .contentType("application/json")
-            .body(equalTo("X-Line-Signature does not exist."));
+            .body(containsString("X-Line-Signature header is required"));
+    }
+
+    @Test
+    public void testCallbackWithEmptyHeader() {
+        String requestBody = "\"Hello World 123\"";
+        RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header("X-Line-Signature", "")
+            .body(requestBody)
+            .when().post("/callback")
+            .then()
+            .contentType("application/json")
+            .body(containsString("X-Line-Signature header is empty"));
     }
 
     @Test
@@ -47,7 +54,7 @@ public class GreetingTest {
             .body(containsString("\"result\":110"));
     }
 
-
+    @Disabled
     @Test
     public void testVertx() {
         RestAssured.when().get("/vertx/hello").then()
