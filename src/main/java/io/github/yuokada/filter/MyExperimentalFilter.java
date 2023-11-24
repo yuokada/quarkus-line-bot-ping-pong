@@ -47,8 +47,7 @@ public class MyExperimentalFilter {
             rc.response().setStatusCode(400);
             rc.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
             rc.end(String.format("{\"message\": \"%s header is required\"}", WebhookParser.SIGNATURE_HEADER_NAME));
-        }
-        if (request.headers().get(WebhookParser.SIGNATURE_HEADER_NAME).isEmpty()) {
+        } else if (request.headers().get(WebhookParser.SIGNATURE_HEADER_NAME).isEmpty()) {
             rc.response().setStatusCode(400);
             rc.response().putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
             rc.end(String.format("{\"message\": \"%s header is empty\"}", WebhookParser.SIGNATURE_HEADER_NAME));
