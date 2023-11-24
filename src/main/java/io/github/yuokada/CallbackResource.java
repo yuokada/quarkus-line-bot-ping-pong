@@ -23,7 +23,6 @@ import jakarta.ws.rs.core.Response;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.jboss.logging.Logger;
@@ -33,16 +32,17 @@ import org.jboss.resteasy.reactive.RestHeader;
 @Path("/callback")
 public class CallbackResource {
 
-    @Inject
-    WebhookParser webhookParser;
-    @Inject
-    LineMessagingClient lineMessagingClient;
+    private final WebhookParser webhookParser;
+    private final LineMessagingClient lineMessagingClient;
 
-//    @Inject
-//    MessagingApiClient messagingApiClient;
+    private final Logger logger;
 
     @Inject
-    Logger logger;
+    public CallbackResource(WebhookParser webhookParser, LineMessagingClient lineMessagingClient, Logger logger) {
+        this.webhookParser = webhookParser;
+        this.lineMessagingClient = lineMessagingClient;
+        this.logger = logger;
+    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
