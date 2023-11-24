@@ -3,6 +3,7 @@ package io.github.yuokada.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResultObject {
+
     @JsonProperty
     int result;
 
