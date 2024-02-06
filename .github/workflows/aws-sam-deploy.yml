@@ -18,7 +18,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - run: |
-          # sam build --use-container
+          make build
           sam build --template sam.jvm.yaml
       - run: |
           # sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
