@@ -19,7 +19,7 @@ jobs:
           aws-region: us-east-2
       - run: |
           # sam build --use-container
-          sam build --template target/sam.jvm.yaml
+          sam build --template sam.jvm.yaml
       - run: |
           # sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
           make deploy_jvm
