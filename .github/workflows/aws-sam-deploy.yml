@@ -28,7 +28,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
       - name: Build with Maven
-        run: ./mvnw -B package --file pom.xml
+        run: ./mvnw -B -Psam package --file pom.xml
       - run: |
           sam build --template sam.jvm.yaml
       - run: |
