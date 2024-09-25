@@ -6,7 +6,7 @@ endif
 ifeq ($(NATIVE_BUILD), true)
 	./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
 else
-	./mvnw package
+	./mvnw -Psam package
 endif
 
 deploy_jvm:
