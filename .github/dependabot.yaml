@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "saturday"
       time: "07:00"
       timezone: "Asia/Tokyo"
@@ -19,9 +19,6 @@ updates:
       day: "saturday"
       time: "07:00"
       timezone: "Asia/Tokyo"
-    # open-pull-requests-limit: 15
-    reviewers:
-      - "yuokada"
     groups:
       line-dependencies:
         patterns:
@@ -29,3 +26,4 @@ updates:
       quarkus-dependencies:
         patterns:
           - "io.quarkus:*"    
+          - "io.quarkus.platform:*"    
