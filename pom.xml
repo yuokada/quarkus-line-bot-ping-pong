@@ -36,12 +36,12 @@
     <dependency>
       <groupId>com.linecorp.bot</groupId>
       <artifactId>line-bot-parser</artifactId>
-      <version>9.8.0</version>
+      <version>9.12.0</version>
     </dependency>
     <dependency>
       <groupId>com.linecorp.bot</groupId>
       <artifactId>line-bot-messaging-api-client</artifactId>
-      <version>9.8.0</version>
+      <version>9.12.0</version>
     </dependency>
     <dependency>
       <groupId>com.linecorp.bot</groupId>
