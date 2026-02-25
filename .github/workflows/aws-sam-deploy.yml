@@ -1,36 +1,32 @@
 ---
 name: AWS SAM Deploy
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '**.md'
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+    branches: [master]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v6
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
-      # - uses: actions/setup-python@v5
       - uses: aws-actions/setup-sam@v2
         with:
-          use-installer: true      
+          use-installer: true
       - uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
-      - name: Build with Maven
+      - name: Build with Maven (SAM profile)
         run: ./mvnw -B -Psam package --file pom.xml
-      - run: |
-          sam build --template sam.jvm.yaml
-      - run: |
-          # sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-          make deploy_jvm
+      - name: Deploy via SAM
+        run: make deploy_jvm
