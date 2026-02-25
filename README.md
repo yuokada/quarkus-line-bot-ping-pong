@@ -1,65 +1,87 @@
 # quarkus-line-bot-ping-pong
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A LINE Messaging API webhook handler built with [Quarkus](https://quarkus.io/), deployable as a standalone server or as an AWS Lambda function via AWS SAM.
 
-If you want to learn more about Quarkus, please visit its website:
-https://quarkus.io/ .
+Receives LINE webhook events and replies to each message with the original text appended with " pong!".
 
-## Running the application in dev mode
+## Requirements
 
-You can run your application in dev mode that enables live coding using:
+- Java 25
+- Maven (via `./mvnw` wrapper)
+- AWS CLI + AWS SAM CLI (for Lambda deployment)
 
-```shell script
+## Running in dev mode
+
+Live reload via Quarkus Dev Services:
+
+```shell
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_** Quarkus now ships with a Dev UI, which is available in dev mode
-> only at http://localhost:8080/q/dev/.
+The Dev UI is available at http://localhost:8080/q/dev/ (dev mode only).
 
-## Packaging and running the application
+## Configuration
 
-The application can be packaged using:
+Set LINE credentials in `src/main/resources/application.properties` or via environment variables:
 
-```shell script
-./mvnw package
+```
+LINE_BOT_CHANNEL_SECRET=<your-secret>
+LINE_BOT_CHANNEL_TOKEN=<your-token>
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the
-`target/quarkus-app/lib/` directory.
+Environment variables take precedence over `application.properties` (Quarkus convention: dots → underscores, uppercase).
 
-The application is now runnable using
-`java -jar target/quarkus-app/quarkus-run.jar`.
+## Building
 
-If you want to build an _über-jar_, execute the following command:
+**JVM build (SAM profile, for Lambda):**
 
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+```shell
+./mvnw -Psam package
+# or
+make build
 ```
 
-The application, packaged as an _über-jar_, is now runnable using
-`java -jar target/*-runner.jar`.
+**Native build (requires Docker):**
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Pnative
+```shell
+make NATIVE_BUILD=true build
+# equivalent to:
+./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build
-in a container using:
+## Testing
 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+**Run all tests:**
+
+```shell
+./mvnw test
 ```
 
-You can then execute your native executable with:
-`./target/quarkus-line-bot-ping-pong-1.0-SNAPSHOT-runner`
+**Run a single test class:**
 
-If you want to learn more about building native executables, please consult
-https://quarkus.io/guides/maven-tooling.
+```shell
+./mvnw test -Dtest=GreetingTest
+```
+
+**Run a single test method:**
+
+```shell
+./mvnw test -Dtest=GreetingTest#testCallbackAdd
+```
+
+## Deploying to AWS Lambda (JVM)
+
+The SAM template (`sam.jvm.yaml`) defines a Java 25 Lambda function (512 MB, 15s timeout) with an HTTP API Gateway trigger. Deployment targets region `ap-northeast-1`, stack `quarkus-line-ping-pong`.
+
+```shell
+make deploy_jvm
+```
+
+This copies `sam.jvm.yaml` and `samconfig.toml` into `target/`, then runs `sam deploy`.
+
+## Health check
+
+MicroProfile liveness endpoint: `GET /q/health/live`
 
 ## Related Guides
 
@@ -72,9 +94,3 @@ https://quarkus.io/guides/maven-tooling.
 - AWS Lambda Gateway REST API
   ([guide](https://quarkus.io/guides/amazon-lambda-http)): Build an API Gateway
   REST API with Lambda integration
-
-## Tips
-
-### `LINE_BOT_CHANNEL_SECRET` and `LINE_BOT_CHANNEL_TOKEN` environment variables
-
-We can use the above environment variables to override application properties.
