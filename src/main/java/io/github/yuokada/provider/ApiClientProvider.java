@@ -20,6 +20,7 @@ public class ApiClientProvider {
     String callbackPath;
 
     @Produces
+    @ApplicationScoped
     public LineMessagingClient provideApiClient() {
         if (channelAccessToken.isEmpty()) {
             throw new RuntimeException(
@@ -35,6 +36,7 @@ public class ApiClientProvider {
     }
 
     @Produces
+    @ApplicationScoped
     public WebhookParser provideParse() {
         if (channelSecret.isEmpty()) {
             throw new RuntimeException(

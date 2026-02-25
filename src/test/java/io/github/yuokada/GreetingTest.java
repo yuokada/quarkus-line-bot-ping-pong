@@ -54,6 +54,51 @@ public class GreetingTest {
             .body(containsString("\"result\":110"));
     }
 
+    @Test
+    public void testCallbackAddNegative() {
+        String requestBody = "{\"left\": -5, \"right\": 3}";
+        RestAssured
+            .given()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(requestBody)
+            .when().post("/callback/add")
+            .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body(containsString("\"result\":-2"));
+    }
+
+    @Test
+    public void testCallbackAddZero() {
+        String requestBody = "{\"left\": 0, \"right\": 0}";
+        RestAssured
+            .given()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(requestBody)
+            .when().post("/callback/add")
+            .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body(containsString("\"result\":0"));
+    }
+
+    @Test
+    public void testXSuperHeaderBlocked() {
+        // Filter priority 200 (signature check) runs before priority 100 (X-Super-Header check).
+        // X-Line-Signature must be non-empty to pass filter 200; then filter 100 sees
+        // X-Super-Header in the request and stops propagation with 400.
+        RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header("X-Line-Signature", "non-empty-signature")
+            .header("X-Super-Header", "test-value")
+            .body("\"test\"")
+            .when().post("/callback")
+            .then()
+            .statusCode(400)
+            .body(containsString("Stop propagation"));
+    }
+
     @Disabled
     @Test
     public void testVertx() {
